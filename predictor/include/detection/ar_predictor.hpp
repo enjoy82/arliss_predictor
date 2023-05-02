@@ -1,6 +1,7 @@
 #pragma once
 #include <opencv2/opencv.hpp>
 
+#include "detection/xyxy.hpp"
 #include "detection/predictor_base.hpp"
 
 class ArPredictor: public PredictorBase
