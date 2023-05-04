@@ -3,25 +3,24 @@
 #include <opencv2/opencv.hpp>
 #include <string>
 
+#include "detection/predictor_base.hpp"
 #include "detection/preprocess.hpp"
 #include "detection/xyxy.hpp"
 
 class Yolov8: public PredictorBase
 {
 private:
-    int image_size;
-    float confidence_threshold;
-    float score_threshold;
+    int m_image_size;
+    float m_confidence_threshold;
+    float m_score_threshold;
     ov::Core core;
     std::shared_ptr<ov::Model> model;
-    ov::preprocess::PrePostProcessor ppp;
     ov::CompiledModel compiled_model;
     ov::InferRequest infer_request;
 
-    void infer(cv::Mat &image);
-    std::vector<float> pull_result();
+    std::vector<float> infer(cv::Mat &image);
 public:
     virtual std::vector<float> precict(cv::Mat &image) override;
-    Yolov8(std::string &model_path, int image_size, float confidence_threshold, float score_threshold);
+    Yolov8(std::string &model_path, int image_size = 640, float confidence_threshold = 0.4, float score_threshold = 0.2);
     ~Yolov8() = default;
 };

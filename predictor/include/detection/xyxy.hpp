@@ -13,7 +13,6 @@ struct Xyxy{
         this->x2 = x2;
         this->y2 = y2;
     }
-
     std::vector<float> normalized(int height, int width){        
         return std::vector<float> {
             static_cast<float>(this->x1) / static_cast<float>(width),
