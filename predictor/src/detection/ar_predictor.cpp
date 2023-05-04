@@ -1,7 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/aruco/charuco.hpp>
 
-#include "detection/xyxy.hpp"
 #include "detection/ar_predictor.hpp"
 
 ArPredictor::ArPredictor()

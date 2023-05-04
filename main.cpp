@@ -3,9 +3,12 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 
-#include "detection/xyxy.hpp"
-#include "detection/predictor_base.hpp"
 #include "detection/ar_predictor.hpp"
+#include "detection/yolov8.hpp"
+
+namespace{
+    std::string model_path = "/home/naoya/code/arliss_predict/model/best.onnx";
+};
 
 void draw_result(cv::Mat &frame, std::vector<float>  &xyxy)
 {
@@ -19,8 +22,9 @@ void draw_result(cv::Mat &frame, std::vector<float>  &xyxy)
 
 int main(){
     ArPredictor ar_predictor;
+    Yolov8 yolo_predictor(model_path);
 
-    int predictor_mode = 1;
+    int predictor_mode = -1;
     cv::VideoCapture cap(0);//デバイスのオープン
     if(!cap.isOpened())//カメラデバイスが正常にオープンしたか確認．
     {
@@ -31,9 +35,13 @@ int main(){
     cv::Mat frame; //取得したフレーム
     while(cap.read(frame))//無限ループ
     {
-        std::vector<float> result = ar_predictor.precict(frame);
-        draw_result(frame, result);
+        std::vector<float> result;
+        if(predictor_mode == 1)
+            result = ar_predictor.precict(frame);
+        else
+            result = yolo_predictor.precict(frame);
 
+        draw_result(frame, result);
         cv::imshow("predictor", frame);//画像を表示．
         const int key = cv::waitKey(1);
         if(key == 'q'/*113*/)//qボタンが押されたとき
